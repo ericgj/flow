@@ -1,8 +1,5 @@
 class User < ActiveRecord::Base
   has_many :authorizations, :dependent => :destroy
-  has_one :rmu_authorization, :class_name => "Authorization",
-                              :conditions => {:provider => 'github'}
-
 
   def self.create_from_hash!(hash)
     create(:name     => hash['user_info']['name'],
@@ -14,15 +11,6 @@ class User < ActiveRecord::Base
     read_attribute(:name) || nickname || "Anonymous ##{id}"
   end
 
-  def admin?
-    @admin ||= alumnus?
-  end
-
-  def alumnus?
-    return false if rmu_authorization.nil?
-    rmu_user = University::User.get(rmu_authorization.uid)
-    return rmu_user && rmu_user.alumnus?
-  end
 
   def refresh_names(hash)
     return if nickname && email

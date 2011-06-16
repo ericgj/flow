@@ -4,3 +4,6 @@ github:
   client: <CLIENT>
   secret: <SECRET>
 
+uni-web:
+  user: <USER>
+  pass: <PASS>
