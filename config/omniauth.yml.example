@@ -6,4 +6,4 @@ github:
 
 uni-web:
   user: <USER>
-  pass: <PASS>
+  password: <PASS>
