@@ -2,7 +2,7 @@ require 'uri'
 
 class SessionsController < ApplicationController
   
-  AUTH_PROVIDER_CHAIN = {'github' => 'http://universityweb.rubymendicant.com/auth/:uid'}
+  AUTH_PROVIDER_CHAIN = {'github' => '/auth/universityweb?uid=:uid'}
   
   def new
     
@@ -10,14 +10,11 @@ class SessionsController < ApplicationController
   
   def create
     auth = request.env['omniauth.auth']
+    
     if url = auth_redirect(@params['provider'], auth)
       redirect_to url
     else
 
-      # Note I'm not sure this logic is needed here; this code is only going to run on the uni-web callback
-      #   and not sure we need to store User has_many :authorizations  
-      # Perhaps we could just have User has_one :authorization, i.e. the uni-web provider auth
-      #
       unless @auth = Authorization.find_from_hash(auth)
         # Create a new user or add an auth to existing user, depending on
         # whether there is already a user signed in.
@@ -28,6 +25,7 @@ class SessionsController < ApplicationController
       self.current_user = @auth.user
       
       redirect_back_or_default root_path
+      
     end
       
   end

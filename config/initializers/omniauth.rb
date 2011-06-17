@@ -11,16 +11,17 @@ end
 # TODO: move
 #
 require 'omniauth/basic'
+require 'json'
 
 module OmniAuth
   module Strategies
     class UniWeb < HttpBasic
       
       def initialize(app, user, pass, options = {})
-        require 'json'
         @user, @pass = user, pass
         @authorized_groups = options[:authorize] || []
         env['REQUEST_METHOD'] = 'POST'    # bypasses login form
+        super(app, :universityweb, nil)
       end
       
       def endpoint
@@ -28,7 +29,11 @@ module OmniAuth
       end
 
       def auth_hash
-        authorize_or_fail(JSON.parse(@response.body))
+        raw = authorize_or_fail(JSON.parse(@response.body))
+        OmniAuth::Utils.deep_merge( super, {
+          'uid' => raw.delete('github'),
+          'user_info' => raw
+        })
       end
       
       private
