@@ -2,7 +2,7 @@ require 'uri'
 
 class SessionsController < ApplicationController
   
-  AUTH_PROVIDER_CHAIN = {'github' => '/auth/universityweb'}
+  AUTH_PROVIDER_CHAIN = {'github' => '/auth/universityweb?uid=:uid'}
   
   def new
     
