@@ -7,6 +7,22 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       format.html
       format.rss { render :layout => false }
+      format.json do
+        json_articles = @articles.map do |article|
+          {
+            :title       => article.title,
+            :body        => article.body,
+            :author      => "#{article.author.email} (#{article.author.name})",
+            :created_at  => article.created_at,
+            :id          => article.id,
+            :url         => article.url,
+            :html        => render_to_string(:partial => 'show.html.haml',
+                              :locals => {:article => article})
+          }
+        end
+
+        render :json => json_articles.to_json      
+      end
     end
   end
 
