@@ -6,7 +6,7 @@ Flow.InfiniteScroll.defaults = {             // settings used in articles#index:
   bufferPx: 0,
   callback: undefined,
   errback: undefined,
-  loadMsgSelector: null,
+  loadMsgSelector: null,                     // 'div.infinitescroll'
   loadingID: 'infinitescroll-loading',
   loadingMsg: undefined,
   loadingImg: undefined,

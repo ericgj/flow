@@ -9,3 +9,16 @@
   = tag :hr, :class => "separator" if article != @articles.last
 
 = paginate @articles
+%div.infinitescroll
+
+- content_for :javascript do
+  = javascript_include_tag 'flow.infinitescroll'
+  :javascript
+    $(function() {
+      Flow.InfiniteScroll.init({
+        url: '/articles.json?page=',
+        nextSelector: 'div.article_content:last',
+        loadMsgSelector: 'div.infinitescroll'        
+      });
+    });
+    
